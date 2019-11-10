@@ -14,6 +14,7 @@ versionpress.maintenance
 !/wp-content/index.php
 !/wp-content/plugins/
 /wp-content/plugins/versionpress/
+/wp-content/plugins/wp-mail-smtp/
 !/wp-content/mu-plugins/
 !/wp-content/themes/
 !/wp-content/languages/
