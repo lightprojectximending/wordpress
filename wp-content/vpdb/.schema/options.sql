@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS `<<table-prefix>>options` (
   `option_value` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `autoload` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`option_id`),
-  UNIQUE KEY `option_name` (`option_name`)
+  UNIQUE KEY `option_name` (`option_name`),
+  KEY `autoload` (`autoload`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci
