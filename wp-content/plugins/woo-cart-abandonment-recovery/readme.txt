@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/BrainstormForce
 Tags: woocommerce, cart abandonment, cart recovery
 Requires at least: 4.4
 Tested up to: 5.2
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -128,6 +128,9 @@ Here are few thoughts behind making it available for free:
 4. General settings for Email, Webhook (Coupon Code), GDPR
 
 == Changelog ==
+= Version 1.2.2 - Tuesday, 12th November 2019 =
+* Fix: Duplicate order issue for variation products.
+
 = Version 1.2.1 - Tuesday, 5th November 2019 =
 * New: Added delete option for used & expired coupons which will be created now onwards.
 * Fix: Sometimes order status remains "abandoned" for initially failed orders.

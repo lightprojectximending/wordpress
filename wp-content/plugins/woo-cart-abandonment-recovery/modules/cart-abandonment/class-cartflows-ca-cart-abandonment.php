@@ -488,10 +488,14 @@ class Cartflows_Ca_Cart_Abandonment {
 	function check_if_already_purchased_by_email_product_ids( $email_data, $current_cart_data ) {
 
 		global $wpdb;
-		$current_cart_data      = unserialize( $current_cart_data );
-		$current_products       = array_values( wp_list_pluck( $current_cart_data, 'product_id' ) );
+		$current_cart_data = unserialize( $current_cart_data );
+
+		// Fetch products & variations.
+		$products         = array_values( wp_list_pluck( $current_cart_data, 'product_id' ) );
+		$variations       = array_values( wp_list_pluck( $current_cart_data, 'variation_id' ) );
+		$current_products = array_unique( array_merge( $products, $variations ) );
+
 		$cart_abandonment_table = $wpdb->prefix . CARTFLOWS_CA_CART_ABANDONMENT_TABLE;
-		$email_history_table    = $wpdb->prefix . CARTFLOWS_CA_EMAIL_HISTORY_TABLE;
 
 		$orders             = wc_get_orders(
 			array(
@@ -515,7 +519,10 @@ class Cartflows_Ca_Cart_Abandonment {
 
 				if ( in_array( $product_id, $current_products, true ) ) {
 
-					$this->skip_future_emails_when_order_is_completed( $email_data->session_id, true );
+					/**
+					 * Remove duplicate captured order for tracking.
+					 */
+					$wpdb->delete( $cart_abandonment_table, array( 'session_id' => sanitize_key( $email_data->session_id ) ) );
 					$need_to_send_email = false;
 					break;
 				}
