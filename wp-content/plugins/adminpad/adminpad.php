@@ -4,7 +4,7 @@ Plugin Name: AdminPad
 Plugin URI: https://iftekhar.net/
 Description: Simple note taker for WP site administrators only.  
 Author: Iftekhar Bhuiyan
-Version: 1.5.2
+Version: 1.5.3
 Author URI: https://iftekhar.net/about/
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

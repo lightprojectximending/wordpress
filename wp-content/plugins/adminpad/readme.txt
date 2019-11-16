@@ -1,12 +1,11 @@
 === AdminPad ===
-Contributors: iftekharbhuiyan
 Plugin Name: AdminPad
 Plugin URI: https://wordpress.org/plugins/adminpad/
 Tags: simple note, note taker, notepad, site administrator, admin note
 Author URI: https://profiles.wordpress.org/iftekharbhuiyan
 Author: Iftekhar Bhuiyan
 Requires at least: 4.5
-Tested up to: 5.2
+Tested up to: 5.3
 Stable tag: 1.5
 License: GPLv2 or later
 
