@@ -66,7 +66,7 @@
 								</p>
 							</div>
 						</div>
-						<a name="Do you really want to reschedule emails?" href="#TB_inline?&width=500&height=200&inlineId=wcf-ca-confirm-email-reschedule" class="thickbox button button-secondary"> <?php _e( 'Reschedule Emails', 'woo-cart-abandonment-recovery' ); ?> </a>
+						<a name="<?php _e( 'Do you really want to reschedule emails?', 'woo-cart-abandonment-recovery' ); ?>" href="#TB_inline?&width=500&height=200&inlineId=wcf-ca-confirm-email-reschedule" class="thickbox button button-secondary"> <?php _e( 'Reschedule Emails', 'woo-cart-abandonment-recovery' ); ?> </a>
 					<?php endif; ?>
 				</div>
 			</div>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/BrainstormForce
 Tags: woocommerce, cart abandonment, cart recovery
 Requires at least: 4.4
 Tested up to: 5.2
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -128,6 +128,14 @@ Here are few thoughts behind making it available for free:
 4. General settings for Email, Webhook (Coupon Code), GDPR
 
 == Changelog ==
+
+= Version 1.2.3 - Thursday, 12th December 2019 =
+* New: Added option to unsubscribe users in bulk.
+* New: Added filter 'woo_ca_exclude_on_hold_order_from_tracking' to exclude on hold orders from the tracking.
+* New: Added product table shortcode for webhook.
+* Improvement: Updated filter 'woo_ca_email_template_table_style' for product table alignment.
+* Fix: Sometimes test emails are not sending.
+
 = Version 1.2.2 - Tuesday, 12th November 2019 =
 * Fix: Duplicate order issue for variation products.
 

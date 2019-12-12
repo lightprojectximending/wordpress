@@ -117,6 +117,11 @@ class Cartflows_Ca_Cart_Abandonment_Table extends WP_List_Table {
 		$actions = array(
 			'delete' => __( 'Delete', 'woo-cart-abandonment-recovery' ),
 		);
+
+		if ( ! isset( $_GET['filter_table'] ) || ( isset( $_GET['filter_table'] ) && WCF_CART_ABANDONED_ORDER === $_GET['filter_table'] ) ) {
+			$actions['unsubscribe'] = __( 'Unsubscribe', 'woo-cart-abandonment-recovery' );
+		}
+
 		return $actions;
 	}
 
@@ -213,19 +218,26 @@ class Cartflows_Ca_Cart_Abandonment_Table extends WP_List_Table {
 		global $wpdb;
 		$table_name = $wpdb->prefix . CARTFLOWS_CA_CART_ABANDONMENT_TABLE;
 
-		if ( 'delete' === $this->current_action() ) {
+		$ids = array();
+		if ( isset( $_REQUEST['id'] ) && is_array( $_REQUEST['id'] ) ) {
+			$ids = array_map( 'intval', $_REQUEST['id'] );
+		} elseif ( isset( $_REQUEST['id'] ) ) {
+			$ids = array( intval( $_REQUEST['id'] ) );
+		}
+		$ids = implode( ',', $ids );
+		if ( ! empty( $ids ) ) {
 
-			$ids = array();
-			if ( isset( $_REQUEST['id'] ) && is_array( $_REQUEST['id'] ) ) {
-				$ids = array_map( 'intval', $_REQUEST['id'] );
-			} elseif ( isset( $_REQUEST['id'] ) ) {
-				$ids = array( intval( $_REQUEST['id'] ) );
-			}
-			$ids = implode( ',', $ids );
+			switch ( $this->current_action() ) {
 
-			if ( ! empty( $ids ) ) {
-                $wpdb->query("DELETE FROM $table_name WHERE id IN($ids)"); // phpcs:ignore
+				case 'delete':
+                    $wpdb->query("DELETE FROM $table_name WHERE id IN($ids)"); // phpcs:ignore
+					break;
+				case 'unsubscribe':
+                    $wpdb->query( "UPDATE {$table_name} SET unsubscribed = 1 WHERE id IN($ids)" ); // phpcs:ignore
+					break;
+
 			}
 		}
+
 	}
 }

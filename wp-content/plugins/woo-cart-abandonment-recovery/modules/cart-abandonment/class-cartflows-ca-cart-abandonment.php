@@ -102,6 +102,11 @@ class Cartflows_Ca_Cart_Abandonment {
 
 		$acceptable_order_statuses = array( 'completed', 'processing', 'failed' );
 
+		$exclude_on_hold_order = apply_filters( 'woo_ca_exclude_on_hold_order_from_tracking', false );
+
+		if ( $exclude_on_hold_order ) {
+			array_push( $acceptable_order_statuses, 'on-hold' );
+		}
 		if ( ( WCF_CART_FAILED_ORDER === $new_order_status ) ) {
 			return;
 		}
@@ -500,7 +505,7 @@ class Cartflows_Ca_Cart_Abandonment {
 		$orders             = wc_get_orders(
 			array(
 				'billing_email' => $email_data->email,
-				'status'        => [ 'processing', 'completed' ],
+				'status'        => array( 'processing', 'completed' ),
 				'date_after'    => date(
 					'Y-m-d h:i:s',
 					strtotime( '-30 days' )
@@ -512,13 +517,9 @@ class Cartflows_Ca_Cart_Abandonment {
 		foreach ( $orders as $order ) {
 			$order = wc_get_order( $order->get_id() );
 			$items = $order->get_items();
-
-			foreach ( $order->get_items() as $item_id => $item_data ) {
-
-				$product_id = $item_data->get_product()->get_id();
-
+			foreach ( $items as $item ) {
+				$product_id = $item->get_product_id();
 				if ( in_array( $product_id, $current_products, true ) ) {
-
 					/**
 					 * Remove duplicate captured order for tracking.
 					 */
@@ -651,6 +652,7 @@ class Cartflows_Ca_Cart_Abandonment {
 			$trigger_details['coupon_code']      = $checkout_details->coupon_code;
 			$trigger_details['order_status']     = $order_status;
 			$trigger_details['cart_total']       = $checkout_details->cart_total;
+			$trigger_details['product_table']    = $this->get_email_product_block( $checkout_details->cart_contents, $checkout_details->cart_total );
 
 			$parameters = http_build_query( $trigger_details );
 			$args       = array(
@@ -1141,8 +1143,8 @@ class Cartflows_Ca_Cart_Abandonment {
 				array( 'unsubscribed' => true ),
 				array( 'id' => $id )
 			);
-
-            $message = '<div class="notice notice-success is-dismissible" id="message"><p>' . sprintf( __( 'User unsubscribed successfully!', 'woo-cart-abandonment-recovery' ) ) . '</p></div>'; // phpcs:ignore
+			$wcf_list_table->process_bulk_action();
+            $message = '<div class="notice notice-success is-dismissible" id="message"><p>' . sprintf( __( 'User(s) unsubscribed successfully!', 'woo-cart-abandonment-recovery' ) ) . '</p></div>'; // phpcs:ignore
 			set_transient( 'wcf_ca_show_message', $message, 5 );
 			if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
 				wp_safe_redirect( $_SERVER['HTTP_REFERER'] );
@@ -1528,7 +1530,6 @@ class Cartflows_Ca_Cart_Abandonment {
 		$current_time = current_time( WCF_CA_DATETIME_FORMAT );
         // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
 		$emails_send_to = $wpdb->get_results(
-
 			$wpdb->prepare(
 				'SELECT *, EHT.id as email_history_id, ETT.id as email_template_id FROM ' . $email_history_table . ' as EHT
 		        INNER JOIN ' . $cart_abandonment_table . ' as CAT ON EHT.`ca_session_id` = CAT.`session_id` 
@@ -1626,9 +1627,10 @@ class Cartflows_Ca_Cart_Abandonment {
 		}
 
 		if ( filter_var( $email_data->email, FILTER_VALIDATE_EMAIL ) ) {
-
-			if ( ! $this->check_if_already_purchased_by_email_product_ids( $email_data, $email_data->cart_contents ) ) {
-				return false;
+			if ( ! $preview_email ) {
+				if ( ! $this->check_if_already_purchased_by_email_product_ids( $email_data, $email_data->cart_contents ) ) {
+					return false;
+				}
 			}
 
 			$other_fields = unserialize( $email_data->other_fields );
@@ -1780,13 +1782,14 @@ class Cartflows_Ca_Cart_Abandonment {
 				'style' => 'height: 42px; width: 42px;',
 			),
 			'table'         => array(
-				'style' => 'color: #636363; border: 1px solid #e5e5e5;',
+				'style'     => 'color: #636363; border: 1px solid #e5e5e5;',
+				'attribute' => 'align= left;',
 			),
 		);
 
-		$style               = apply_filters( 'woo_ca_email_template_table_style', $style );
-		$product_image_style = isset( $style['product_image']['style'] ) ? $style['product_image']['style'] : '';
-		$style               = isset( $style['table']['style'] ) ? $style['table']['style'] : '';
+		$style_filter        = apply_filters( 'woo_ca_email_template_table_style', $style );
+		$product_image_style = isset( $style_filter['product_image']['style'] ) ? $style_filter['product_image']['style'] : '';
+		$style               = isset( $style_filter['table']['style'] ) ? $style_filter['table']['style'] : '';
 
 		foreach ( $cart_items as $cart_item ) {
 
@@ -1816,7 +1819,7 @@ class Cartflows_Ca_Cart_Abandonment {
                         </tr> ';
 		}
 
-		return '<table align="left" cellpadding="10" cellspacing="0" style="float: none; border: 1px solid #e5e5e5;">
+		return '<table ' . $style_filter['table']['attribute'] . ' cellpadding="10" cellspacing="0" style="float: none; border: 1px solid #e5e5e5;">
 	                <tr align="center">
 	                   <th  style="' . $style . '">' . __( 'Item', 'woo-cart-abandonment-recovery' ) . '</th>
 	                   <th  style="' . $style . '">' . __( 'Name', 'woo-cart-abandonment-recovery' ) . '</th>
@@ -1825,7 +1828,6 @@ class Cartflows_Ca_Cart_Abandonment {
 	                   <th  style="' . $style . '">' . __( 'Line Subtotal', 'woo-cart-abandonment-recovery' ) . '</th>
 	                </tr> ' . $tr . '                 
 	        </table>';
-
 	}
 
 	/**
