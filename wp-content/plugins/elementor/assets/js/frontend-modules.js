@@ -1,4 +1,4 @@
-/*! elementor - v2.8.0 - 09-12-2019 */
+/*! elementor - v2.8.1 - 11-12-2019 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 637);
+/******/ 	return __webpack_require__(__webpack_require__.s = 639);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1151,7 +1151,7 @@ var speciesConstructor = __webpack_require__(170);
 var advanceStringIndex = __webpack_require__(89);
 var toLength = __webpack_require__(37);
 var callRegExpExec = __webpack_require__(78);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 var fails = __webpack_require__(22);
 var $min = Math.min;
 var $push = [].push;
@@ -1354,7 +1354,8 @@ module.exports = function (KEY, exec) {
 
 
 /***/ }),
-/* 75 */
+/* 75 */,
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1419,7 +1420,6 @@ module.exports = patchedExec;
 
 
 /***/ }),
-/* 76 */,
 /* 77 */,
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1460,7 +1460,7 @@ var hide = __webpack_require__(25);
 var fails = __webpack_require__(22);
 var defined = __webpack_require__(32);
 var wks = __webpack_require__(9);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 
 var SPECIES = wks('species');
 
@@ -2975,7 +2975,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 __webpack_require__(29)({
   target: 'RegExp',
   proto: true,
@@ -3757,8 +3757,8 @@ module.exports = Object.getPrototypeOf || function (O) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(55);
-var call = __webpack_require__(232);
-var isArrayIter = __webpack_require__(233);
+var call = __webpack_require__(233);
+var isArrayIter = __webpack_require__(234);
 var anObject = __webpack_require__(20);
 var toLength = __webpack_require__(107);
 var getIterFn = __webpack_require__(172);
@@ -3791,7 +3791,8 @@ exports.RETURN = RETURN;
 /* 229 */,
 /* 230 */,
 /* 231 */,
-/* 232 */
+/* 232 */,
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
@@ -3809,7 +3810,7 @@ module.exports = function (iterator, fn, value, entries) {
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
@@ -3823,7 +3824,6 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 234 */,
 /* 235 */,
 /* 236 */,
 /* 237 */,
@@ -5471,7 +5471,9 @@ module.exports = function (fn, args, that) {
 /* 634 */,
 /* 635 */,
 /* 636 */,
-/* 637 */
+/* 637 */,
+/* 638 */,
+/* 639 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5483,9 +5485,9 @@ var _modules = _interopRequireDefault(__webpack_require__(466));
 
 var _document = _interopRequireDefault(__webpack_require__(464));
 
-var _stretchElement = _interopRequireDefault(__webpack_require__(638));
+var _stretchElement = _interopRequireDefault(__webpack_require__(640));
 
-var _base = _interopRequireDefault(__webpack_require__(639));
+var _base = _interopRequireDefault(__webpack_require__(641));
 
 _modules.default.frontend = {
   Document: _document.default,
@@ -5498,7 +5500,7 @@ _modules.default.frontend = {
 };
 
 /***/ }),
-/* 638 */
+/* 640 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5572,7 +5574,7 @@ module.exports = elementorModules.ViewModule.extend({
 });
 
 /***/ }),
-/* 639 */
+/* 641 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,4 +1,4 @@
-/*! elementor - v2.8.0 - 09-12-2019 */
+/*! elementor - v2.8.1 - 11-12-2019 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1506,7 +1506,7 @@ var speciesConstructor = __webpack_require__(170);
 var advanceStringIndex = __webpack_require__(89);
 var toLength = __webpack_require__(37);
 var callRegExpExec = __webpack_require__(78);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 var fails = __webpack_require__(22);
 var $min = Math.min;
 var $push = [].push;
@@ -1709,7 +1709,8 @@ module.exports = function (KEY, exec) {
 
 
 /***/ }),
-/* 75 */
+/* 75 */,
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1774,7 +1775,6 @@ module.exports = patchedExec;
 
 
 /***/ }),
-/* 76 */,
 /* 77 */,
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1815,7 +1815,7 @@ var hide = __webpack_require__(25);
 var fails = __webpack_require__(22);
 var defined = __webpack_require__(32);
 var wks = __webpack_require__(9);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 
 var SPECIES = wks('species');
 
@@ -2446,7 +2446,7 @@ module.exports = _setPrototypeOf;
 /* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(227);
+module.exports = __webpack_require__(228);
 
 /***/ }),
 /* 116 */
@@ -3194,7 +3194,7 @@ module.exports = function (it) {
 /* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(229);
+module.exports = __webpack_require__(230);
 
 /***/ }),
 /* 160 */
@@ -3296,7 +3296,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 __webpack_require__(29)({
   target: 'RegExp',
   proto: true,
@@ -3438,7 +3438,7 @@ module.exports = __webpack_require__(7).getIteratorMethod = function (it) {
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(226);
+module.exports = __webpack_require__(227);
 
 /***/ }),
 /* 176 */
@@ -4113,7 +4113,8 @@ $export($export.S, 'Object', {
 /* 223 */,
 /* 224 */,
 /* 225 */,
-/* 226 */
+/* 226 */,
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var core = __webpack_require__(7);
@@ -4124,15 +4125,15 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(228);
+__webpack_require__(229);
 module.exports = __webpack_require__(7).Object.values;
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -4147,25 +4148,25 @@ $export($export.S, 'Object', {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(230);
+__webpack_require__(231);
 module.exports = __webpack_require__(7).Object.assign;
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(8);
 
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(231) });
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__(232) });
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4210,7 +4211,6 @@ module.exports = !$assign || __webpack_require__(23)(function () {
 
 
 /***/ }),
-/* 232 */,
 /* 233 */,
 /* 234 */,
 /* 235 */,
@@ -5204,6 +5204,9 @@ var _getPrototypeOf3 = _interopRequireDefault(__webpack_require__(4));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(6));
 
+/**
+ * TODO: Full JSDOC.
+ */
 var Commands =
 /*#__PURE__*/
 function (_elementorModules$Mod) {
@@ -5293,6 +5296,11 @@ function (_elementorModules$Mod) {
       return command === this.current[component.getRootContainer()];
     }
   }, {
+    key: "isCurrentFirstTrace",
+    value: function isCurrentFirstTrace(command) {
+      return command === this.getCurrentFirstTrace();
+    }
+  }, {
     key: "getCurrent",
     value: function getCurrent() {
       var container = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -5321,6 +5329,11 @@ function (_elementorModules$Mod) {
       }
 
       return this.currentArgs;
+    }
+  }, {
+    key: "getCurrentFirstTrace",
+    value: function getCurrentFirstTrace() {
+      return this.currentTrace[0];
     }
   }, {
     key: "beforeRun",

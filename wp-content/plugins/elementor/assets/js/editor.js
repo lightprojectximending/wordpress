@@ -1,4 +1,4 @@
-/*! elementor - v2.8.0 - 09-12-2019 */
+/*! elementor - v2.8.1 - 11-12-2019 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1814,7 +1814,7 @@ var speciesConstructor = __webpack_require__(170);
 var advanceStringIndex = __webpack_require__(89);
 var toLength = __webpack_require__(37);
 var callRegExpExec = __webpack_require__(78);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 var fails = __webpack_require__(22);
 var $min = Math.min;
 var $push = [].push;
@@ -2039,7 +2039,8 @@ module.exports = function (KEY, exec) {
 
 
 /***/ }),
-/* 75 */
+/* 75 */,
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2104,7 +2105,6 @@ module.exports = patchedExec;
 
 
 /***/ }),
-/* 76 */,
 /* 77 */,
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2145,7 +2145,7 @@ var hide = __webpack_require__(25);
 var fails = __webpack_require__(22);
 var defined = __webpack_require__(32);
 var wks = __webpack_require__(9);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 
 var SPECIES = wks('species');
 
@@ -2818,9 +2818,11 @@ function () {
     key: "isValidChild",
     value: function isValidChild(childModel, parentModel) {
       var parentElType = parentModel.get('elType'),
-          draggedElType = childModel.get('elType');
+          draggedElType = childModel.get('elType'),
+          parentIsInner = parentModel.get('isInner'),
+          draggedIsInner = childModel.get('isInner'); // Block's inner-section at inner-section column.
 
-      if (childModel.get('isInner') && parentModel.get('isInner')) {
+      if (draggedIsInner && 'section' === draggedElType && parentIsInner && 'column' === parentElType) {
         return false;
       }
 
@@ -3014,7 +3016,7 @@ module.exports = _setPrototypeOf;
 /* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(227);
+module.exports = __webpack_require__(228);
 
 /***/ }),
 /* 116 */
@@ -3934,7 +3936,7 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 /* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(229);
+module.exports = __webpack_require__(230);
 
 /***/ }),
 /* 160 */
@@ -4036,7 +4038,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 __webpack_require__(29)({
   target: 'RegExp',
   proto: true,
@@ -4178,7 +4180,7 @@ module.exports = __webpack_require__(7).getIteratorMethod = function (it) {
 
 "use strict";
 
-__webpack_require__(234);
+__webpack_require__(235);
 var anObject = __webpack_require__(19);
 var $flags = __webpack_require__(91);
 var DESCRIPTORS = __webpack_require__(21);
@@ -4214,7 +4216,7 @@ module.exports = __webpack_require__(195);
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(226);
+module.exports = __webpack_require__(227);
 
 /***/ }),
 /* 176 */
@@ -5311,7 +5313,7 @@ var _helpers = _interopRequireDefault(__webpack_require__(109));
 
 var ControlsCSSParser = __webpack_require__(222),
     Validator = __webpack_require__(203),
-    BaseContainer = __webpack_require__(240),
+    BaseContainer = __webpack_require__(241),
     BaseElementView;
 
 BaseElementView = BaseContainer.extend({
@@ -6609,10 +6611,11 @@ function (_elementorModules$Mod) {
         this.picker.setColor('#000');
       }
 
+      this.color = this.processColor();
       this.picker.on('change', function () {
-        return _this2.onPickerChange.apply(_this2, arguments);
+        return _this2.onPickerChange();
       }).on('clear', function () {
-        return _this2.onPickerClear.apply(_this2, arguments);
+        return _this2.onPickerClear();
       }).on('show', function () {
         return _this2.onPickerShow();
       });
@@ -6621,8 +6624,8 @@ function (_elementorModules$Mod) {
       this.addToolsToSwatches();
     }
   }, {
-    key: "getValue",
-    value: function getValue() {
+    key: "processColor",
+    value: function processColor() {
       var color = this.picker.getColor();
       var colorRepresentation;
 
@@ -6633,6 +6636,11 @@ function (_elementorModules$Mod) {
       }
 
       return colorRepresentation.toString(0);
+    }
+  }, {
+    key: "getColor",
+    value: function getColor() {
+      return this.color;
     }
   }, {
     key: "getSwatches",
@@ -6762,19 +6770,27 @@ function (_elementorModules$Mod) {
     key: "onPickerChange",
     value: function onPickerChange() {
       this.picker.applyColor();
+      var newColor = this.processColor();
+
+      if (newColor === this.color) {
+        return;
+      }
+
+      this.color = newColor;
       var onChange = this.getSettings('onChange');
 
       if (onChange) {
-        onChange.apply(void 0, arguments);
+        onChange();
       }
     }
   }, {
     key: "onPickerClear",
     value: function onPickerClear() {
+      this.color = '';
       var onClear = this.getSettings('onClear');
 
       if (onClear) {
-        onClear.apply(void 0, arguments);
+        onClear();
       }
     }
   }, {
@@ -6792,11 +6808,10 @@ function (_elementorModules$Mod) {
   }, {
     key: "onAddButtonClick",
     value: function onAddButtonClick() {
-      var value = this.getValue();
-      this.addSwatch(value);
+      this.addSwatch(this.color);
       this.addToolsToSwatches();
       elementor.schemes.addSchemeItem('color-picker', {
-        value: value
+        value: this.color
       });
       elementor.schemes.saveScheme('color-picker');
       this.fixTipsyForFF(this.$addButton);
@@ -6861,7 +6876,7 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _keys = _interopRequireDefault(__webpack_require__(27));
 
-__webpack_require__(238);
+__webpack_require__(239);
 
 __webpack_require__(85);
 
@@ -6871,7 +6886,7 @@ __webpack_require__(17);
 
 __webpack_require__(30);
 
-var Stylesheet = __webpack_require__(239),
+var Stylesheet = __webpack_require__(240),
     ControlsCSSParser;
 
 ControlsCSSParser = elementorModules.ViewModule.extend({
@@ -7316,7 +7331,8 @@ __webpack_require__(79)('search', 1, function (defined, SEARCH, $search, maybeCa
 
 
 /***/ }),
-/* 226 */
+/* 226 */,
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var core = __webpack_require__(7);
@@ -7327,15 +7343,15 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(228);
+__webpack_require__(229);
 module.exports = __webpack_require__(7).Object.values;
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
@@ -7350,25 +7366,25 @@ $export($export.S, 'Object', {
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(230);
+__webpack_require__(231);
 module.exports = __webpack_require__(7).Object.assign;
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(8);
 
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(231) });
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__(232) });
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7413,7 +7429,7 @@ module.exports = !$assign || __webpack_require__(23)(function () {
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
@@ -7431,7 +7447,7 @@ module.exports = function (iterator, fn, value, entries) {
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
@@ -7445,7 +7461,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 21.2.5.3 get RegExp.prototype.flags()
@@ -7456,7 +7472,7 @@ if (__webpack_require__(21) && /./g.flags != 'g') __webpack_require__(35).f(RegE
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(24);
@@ -7471,7 +7487,7 @@ module.exports = function (that, target, C) {
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(257);
@@ -7493,7 +7509,7 @@ exports.f = __webpack_require__(21) ? gOPD : function getOwnPropertyDescriptor(O
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
@@ -7506,13 +7522,13 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(13);
-var inheritIfRequired = __webpack_require__(235);
+var inheritIfRequired = __webpack_require__(236);
 var dP = __webpack_require__(35).f;
-var gOPN = __webpack_require__(237).f;
+var gOPN = __webpack_require__(238).f;
 var isRegExp = __webpack_require__(108);
 var $flags = __webpack_require__(91);
 var $RegExp = global.RegExp;
@@ -7555,7 +7571,7 @@ __webpack_require__(258)('RegExp');
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7779,7 +7795,7 @@ var _keys = _interopRequireDefault(__webpack_require__(27));
 })(jQuery);
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7915,7 +7931,7 @@ module.exports = Marionette.CompositeView.extend({
 });
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8158,7 +8174,6 @@ var _default = AddSectionBase;
 exports.default = _default;
 
 /***/ }),
-/* 242 */,
 /* 243 */,
 /* 244 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -8760,7 +8775,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function (test, buggy, set) {
       try {
-        set = __webpack_require__(70)(Function.call, __webpack_require__(236).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(70)(Function.call, __webpack_require__(237).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch (e) { buggy = true; }
@@ -8938,7 +8953,7 @@ ControlBoxShadowItemView = ControlMultipleBaseItemView.extend({
         default: this.getControlValue('color')
       },
       onChange: function onChange() {
-        _this2.setValue('color', _this2.colorPicker.getValue());
+        _this2.setValue('color', _this2.colorPicker.getColor());
       },
       onClear: function onClear() {
         _this2.setValue('color', '');
@@ -9676,7 +9691,7 @@ var _get2 = _interopRequireDefault(__webpack_require__(28));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(6));
 
-var _base = _interopRequireDefault(__webpack_require__(241));
+var _base = _interopRequireDefault(__webpack_require__(242));
 
 var AddSectionView =
 /*#__PURE__*/
@@ -15256,8 +15271,8 @@ module.exports = __webpack_require__(7).Array.from;
 var ctx = __webpack_require__(55);
 var $export = __webpack_require__(8);
 var toObject = __webpack_require__(34);
-var call = __webpack_require__(232);
-var isArrayIter = __webpack_require__(233);
+var call = __webpack_require__(233);
+var isArrayIter = __webpack_require__(234);
 var toLength = __webpack_require__(107);
 var createProperty = __webpack_require__(254);
 var getIterFn = __webpack_require__(172);
@@ -16057,7 +16072,7 @@ function (_ControlBaseDataView) {
   }, {
     key: "onPickerChange",
     value: function onPickerChange() {
-      this.setValue(this.colorPicker.getValue());
+      this.setValue(this.colorPicker.getColor());
     }
   }, {
     key: "onPickerClear",
@@ -16090,7 +16105,7 @@ var _typeof2 = _interopRequireDefault(__webpack_require__(47));
 
 __webpack_require__(85);
 
-__webpack_require__(238);
+__webpack_require__(239);
 
 __webpack_require__(68);
 
@@ -16729,11 +16744,11 @@ module.exports = {
 var global = __webpack_require__(13);
 var has = __webpack_require__(46);
 var cof = __webpack_require__(36);
-var inheritIfRequired = __webpack_require__(235);
+var inheritIfRequired = __webpack_require__(236);
 var toPrimitive = __webpack_require__(88);
 var fails = __webpack_require__(22);
-var gOPN = __webpack_require__(237).f;
-var gOPD = __webpack_require__(236).f;
+var gOPN = __webpack_require__(238).f;
+var gOPD = __webpack_require__(237).f;
 var dP = __webpack_require__(35).f;
 var $trim = __webpack_require__(353).trim;
 var NUMBER = 'Number';
@@ -17151,7 +17166,7 @@ var _stringify = _interopRequireDefault(__webpack_require__(175));
 __webpack_require__(17);
 
 var Schemes,
-    Stylesheet = __webpack_require__(239),
+    Stylesheet = __webpack_require__(240),
     ControlsCSSParser = __webpack_require__(222);
 
 Schemes = function Schemes() {
@@ -21734,15 +21749,17 @@ ControlRepeaterItemView = ControlBaseDataView.extend({
     };
   },
   childViewOptions: function childViewOptions(rowModel, index) {
-    var elementContainer = this.getOption('container'); // TODO: Temp backwards compatibility. since 2.8.0.
+    var elementContainer = this.getOption('container');
+    var rowId = rowModel.get('_id'); // TODO: Temp backwards compatibility. since 2.8.0.
 
-    if ('bc-container' === elementContainer.type) {
-      rowModel.set('_id', 'bc-' + elementor.helpers.getUniqueID());
+    if (!rowId) {
+      rowId = 'bc-' + elementor.helpers.getUniqueID();
+      rowModel.set('_id', rowId);
     }
 
     elementContainer.children[index] = new elementorModules.editor.Container({
       type: 'repeater',
-      id: rowModel.get('_id'),
+      id: rowId,
       model: new Backbone.Model({
         name: this.model.get('name')
       }),
@@ -25561,7 +25578,7 @@ module.exports = PanelSchemeItemView.extend({
         default: this.model.get('value')
       },
       onChange: function onChange() {
-        _this.triggerMethod('value:change', _this.colorPicker.getValue());
+        _this.triggerMethod('value:change', _this.colorPicker.getColor());
       },
       onClear: function onClear() {
         _this.triggerMethod('value:change', '');
@@ -25872,7 +25889,7 @@ var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(4));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(6));
 
-var _base = _interopRequireDefault(__webpack_require__(241));
+var _base = _interopRequireDefault(__webpack_require__(242));
 
 var AddSectionView =
 /*#__PURE__*/
@@ -26022,7 +26039,7 @@ exports.default = _default;
 __webpack_require__(17);
 
 var SectionView = __webpack_require__(178),
-    BaseContainer = __webpack_require__(240),
+    BaseContainer = __webpack_require__(241),
     BaseSectionsContainerView;
 
 BaseSectionsContainerView = BaseContainer.extend({

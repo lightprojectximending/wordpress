@@ -1,4 +1,4 @@
-/*! elementor - v2.8.0 - 09-12-2019 */
+/*! elementor - v2.8.1 - 11-12-2019 */
 @charset "UTF-8";
 .elementor-tags-list {
   display: none;
@@ -528,7 +528,6 @@ a.elementor-responsive-switcher {
 
 .elementor-update-preview {
   margin: 15px 15px 0;
-  background-color: #e6e9ec;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

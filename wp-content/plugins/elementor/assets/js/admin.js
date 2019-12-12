@@ -1,4 +1,4 @@
-/*! elementor - v2.8.0 - 09-12-2019 */
+/*! elementor - v2.8.1 - 11-12-2019 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -291,7 +291,7 @@ module.exports = function (TO_STRING) {
 
 "use strict";
 
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 __webpack_require__(29)({
   target: 'RegExp',
   proto: true,
@@ -1268,7 +1268,7 @@ var speciesConstructor = __webpack_require__(170);
 var advanceStringIndex = __webpack_require__(89);
 var toLength = __webpack_require__(37);
 var callRegExpExec = __webpack_require__(78);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 var fails = __webpack_require__(22);
 var $min = Math.min;
 var $push = [].push;
@@ -1439,7 +1439,7 @@ module.exports = function (key) {
 
 /***/ }),
 
-/***/ 75:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1545,7 +1545,7 @@ var hide = __webpack_require__(25);
 var fails = __webpack_require__(22);
 var defined = __webpack_require__(32);
 var wks = __webpack_require__(9);
-var regexpExec = __webpack_require__(75);
+var regexpExec = __webpack_require__(76);
 
 var SPECIES = wks('species');
 
