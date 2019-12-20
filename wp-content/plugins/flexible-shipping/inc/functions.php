@@ -80,9 +80,6 @@ if ( !function_exists('wpdesk_redirect') ) {
 
 if ( !function_exists( 'wpdesk__' ) ) {
 	function wpdesk__( $text, $domain ) {
-		if ( function_exists( 'icl_sw_filters_gettext' ) ) {
-			return icl_sw_filters_gettext( $text, $text, $domain, $text );
-		}
 		if ( function_exists( 'pll__' ) ) {
 			return pll__( $text );
 		}

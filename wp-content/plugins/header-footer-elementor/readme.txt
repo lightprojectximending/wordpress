@@ -4,8 +4,8 @@ Tags: elementor, header footer builder, header, footer, page builder, template b
 Donate link: https://www.paypal.me/BrainstormForce
 Requires at least: 4.4
 Requires PHP: 5.4
-Tested up to: 5.2
-Stable tag: 1.1.4
+Tested up to: 5.3
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Create Header and Footer for your site using Elementor Page Builder.
 
 == Description ==
 
-Have you ever imagined you could create your website’s header and footer with <a href="https://elementor.com/?ref=1352">Elementor</a>?
+Have you ever imagined you could create your website header and footer with <a href="https://elementor.com/?ref=1352">Elementor</a>?
 
 The Header Footer Elementor plugin allows you to create a layout with Elementor and set it as a header or footer easily on your website.
 
@@ -27,7 +27,7 @@ You can refer to our step-by-step article that will help you <a href="https://ua
 
 = Features of Header Footer Elementor =
 
-- Create attractive pages and templates to be used as header or footer.
+- Create attractive pages and templates to be used as a header or footer.
 - Usefully customized header and footer across the website.
 
 = Themes you can use Header Footer Elementor with =
@@ -41,6 +41,7 @@ The Header Footer Elementor isn’t universally compatible with all WordPress th
 5. OceanWP.
 6. Genesis.
 7. Phlox Theme.
+8. Attesa Theme.
 
 Do not see your theme listed here? Theme authors can add <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Adding-Header-Footer-Elementor-support-for-your-theme">support for Header Footer Elementor through their theme</a> easily.
 
@@ -71,28 +72,20 @@ Made with love at <a href="https://www.brainstormforce.com/?utm_source=wp-repo&u
 == Installation ==
 
 1. Go to `Plugins -> Add New` and search for Header Footer Elementor.
-1. Activate the plugin through the 'Plugins' screen in WordPress.
-1. Go to `Appearance -> Header Footer Builder` to build a header or footer layout using elementor.
-1. After the layout is ready assign the layout as header or footer using the option `Select the type of template this is` (<a href="https://cloudup.com/clK2sPg9nXK+">screenshot</a>)
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Go to `Appearance -> Header Footer Builder` to build a header or footer layout using elementor.
+4. After the layout is ready assign it as header or footer using the option `Select the type of template this is` (<a href="https://cloudup.com/clK2sPg9nXK+">screenshot</a>)
 
 == Frequently Asked Questions ==
-
-= Which themes are supported by this plugin? =
-
-1. <a href="https://wpastra.com/?utm_source=wp-repo&utm_campaign=header-footer-elementor&utm_medium=description&bsf=162">Astra</a> - The Fastest, Most Lightweight &amp; Customizable WordPress Theme.
-2. GeneratePress Theme.
-3. Genesis Theme (and should work with most of its child themes).
-4. OceanWP Theme.
-5. Beaver Builder theme.
 
 If you are a theme developer <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Adding-Header-Footer-Elementor-support-for-your-theme">here</a> is a quick tutorial on how you can add support for the Header Footer Elementor from your theme.
 
 = How does this plugin work =
 
 1. Go to `Appearance -> Header Footer Builder` to build a header or footer layout using elementor.
-1. After the layout is ready assign the layout as header or footer using the option `Select the type of template this is` (<a href="https://cloudup.com/clK2sPg9nXK+">screenshot</a>)
+2. After the layout is ready assign the layout as header or footer using the option `Select the type of template this is` (<a href="https://cloudup.com/clK2sPg9nXK+">screenshot</a>)
 
-= Can you create Mobile Responsive Header/Footer using this plugin? =
+= Can you create a Mobile Responsive Header/Footer using this plugin? =
 
 Yes, You can create the mobile responsive layout of your header using the plugin.  
 
@@ -105,8 +98,8 @@ This same applies when you are creating your Header/Footer using this plugin.
 
 If you are a theme developer <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Adding-Header-Footer-Elementor-support-for-your-theme">here</a> is a quick tutorial on how you can add support for the Header Footer Elementor from your theme.
 
-If you are using a pre-made theme, The best approach would be to contact yoru theme developer and provide them link to the <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Adding-Header-Footer-Elementor-support-for-your-theme">Wiki article</a> on how they can add support for the plugin. 
-If the above is nnot possible, You can also add support for the plugin from your child theme. Just follow <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Add-support-to-Header-Footer-Elementor-from-the-Child-Theme">this article</a>
+If you are using a pre-made theme, The best approach would be to contact your theme developer and provide them link to the <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Adding-Header-Footer-Elementor-support-for-your-theme">Wiki article</a> on how they can add support for the plugin. 
+If the above is not possible, You can also add support for the plugin from your child theme. Just follow <a href="https://github.com/Nikschavan/header-footer-elementor/wiki/Add-support-to-Header-Footer-Elementor-from-the-Child-Theme">this article</a>
 
 == Screenshots ==
 
@@ -114,6 +107,14 @@ If the above is nnot possible, You can also add support for the plugin from your
 2. After the template is ready, assign it to be a header or footer replacement.
 
 == Changelog ==
+
+= 1.2.0 =
+- New: Support all the themes, Includes two separate fallback methods so that you can create custom headers and footers for any theme.
+- New: Added target rule engine, which allows you to have different headers/footers for different pages.
+- New: Added Retina Image Elementor widget, which can be used as a Site Logo.
+- New: Added Copyright widget and Shortcode for current year & site title.
+- Improvement: Allow before footer to work on Elementor Canvas Template when not using Astra Theme.
+- Improvement: Added support of `Before Footer` action for all the themes.
 
 = 1.1.4 =
 - Fix: Flush permalinks on plugin update to Elementor error when trying to edit the Header/Footer.
@@ -132,7 +133,7 @@ If the above is nnot possible, You can also add support for the plugin from your
 
 = 1.1.0 =
 - New: Rename plugin to be Header Footer & Blocks builder as now thee blocks templates can be used as shortcodes.
-- New: Add templates before the footer for Astra Theme. Options for other themes will be cominng soon.
+- New: Add templates before the footer for Astra Theme. Options for other themes will be coming soon.
 - New: Use templates (Blocks) anywhere in your content with the help of shortcodes.
 - Improvement: Improved the UI of the metabox for Header Footer post type.
 
@@ -186,7 +187,7 @@ If the above is nnot possible, You can also add support for the plugin from your
 
 = 1.0.2 =
 - New: Added support for the OceanWP Theme.
-- Fix: Load the elementor header assets corectly in header. This fixes header looking different just when loading the page as previously Elementor would load it's CSS in the footer.
+- Fix: Load the elementor header assets correctly in the header. This fixes header looking different just when loading the page as previously Elementor would load its CSS in the footer.
 - Introduced helper functions for rendering and checking the headers to make it simpler to integrate HFE with more themes.
 
 = 1.0.1 =

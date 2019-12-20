@@ -1,10 +1,10 @@
-=== Flexible Shipping for WooCommerce ===
+=== Table Rate for WooCommerce by Flexible Shipping ===
 Contributors: wpdesk,dyszczo,grola,potreb
 Donate link: https://flexibleshipping.com/table-rate/
 Tags: table rate, table rate shipping, woocommerce shipping, flexible shipping, woocommerce table rate shipping, cart based shipping, weight shipping, weight based shipping, totals based shipping, order based shipping, shipping zones, shipping classes
 Requires at least: 4.5
 Tested up to: 5.3
-Stable tag: 3.9.3
+Stable tag: 3.9.4
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -72,7 +72,7 @@ The Location Based Shipping Add-On extends Flexible Shipping for WooCommerce wit
 
 = WooCommerce Compatibility =
 
-**WooCommerce 3.5 ready!** In Flexible Shipping 2.1.8 we added support for WooCommerce 3.5. WooCommerce 3.4 is supported from version 2.1.2.
+**WooCommerce 3.8 ready!** In Flexible Shipping 3.9.2 we added support for WooCommerce 3.8.
 
 **Shipping Zones ready!** Flexible Shipping is compatible with WooCommerce Shipping Zones introduced in version 2.6. Read more about [WooCommerce Shipping Zones](https://flexibleshipping.com/woocommerce-shipping-zones-explained/).
 
@@ -175,11 +175,14 @@ If you are upgrading from the old Flexible Shipping version (1.3.2, woo-flexible
 
 == Changelog ==
 
+= 3.9.4 - 2019-12-11 =
+* Fixed WPML string translations compatibility
+
 = 3.9.3 - 2019-10-07 =
 * Added shipment data to WooCommerce REST API Order response
-* Removed A/B Tests for pointer messages
-* Changed deactivation form to popup window
 * Added A/B Tests on deactivation form
+* Changed deactivation form to popup window
+* Removed A/B Tests for pointer messages
 
 = 3.9.2 - 2019-10-04 =
 * Added support for WooCommerce 3.8 and Wordpress 5.3
