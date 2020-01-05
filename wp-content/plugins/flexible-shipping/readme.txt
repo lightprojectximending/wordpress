@@ -3,8 +3,8 @@ Contributors: wpdesk,dyszczo,grola,potreb
 Donate link: https://flexibleshipping.com/table-rate/
 Tags: table rate, table rate shipping, woocommerce shipping, flexible shipping, woocommerce table rate shipping, cart based shipping, weight shipping, weight based shipping, totals based shipping, order based shipping, shipping zones, shipping classes
 Requires at least: 4.5
-Tested up to: 5.3
-Stable tag: 3.9.4
+Tested up to: 5.3.2
+Stable tag: 3.9.5
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -174,6 +174,9 @@ We provide a limited support for the free version in the [plugin Support Forum](
 If you are upgrading from the old Flexible Shipping version (1.3.2, woo-flexible-shipping) make sure to completely delete the old version first. If you install the new version without deleting the old one you may break your WordPress installation.
 
 == Changelog ==
+
+= 3.9.5 - 2020-01-03 =
+* Added support for WooCommerce 3.9
 
 = 3.9.4 - 2019-12-11 =
 * Fixed WPML string translations compatibility
