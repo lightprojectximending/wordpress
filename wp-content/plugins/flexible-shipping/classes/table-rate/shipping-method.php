@@ -63,7 +63,7 @@ if ( ! class_exists( 'WPDesk_Flexible_Shipping' ) ) {
 
 			$this->init();
 
-			
+
 			//$this->method_title    	= $this->get_option( 'title' );
 
             //add_action( 'woocommerce_sections_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -640,15 +640,25 @@ if ( ! class_exists( 'WPDesk_Flexible_Shipping' ) ) {
          * @return bool
          */
 		public function is_free_shipping( array $shipping_method_settings, $cart_contents_cost ) {
+		    $is_free_shipping = false;
 			if ( isset( $shipping_method_settings[ self::FIELD_METHOD_FREE_SHIPPING ] ) && '' !== $shipping_method_settings[ self::FIELD_METHOD_FREE_SHIPPING ] ) {
 			    $shipping_method_settings[self::FIELD_METHOD_FREE_SHIPPING] = trim( $shipping_method_settings[self::FIELD_METHOD_FREE_SHIPPING] );
 			    if ( '0' !== $shipping_method_settings[self::FIELD_METHOD_FREE_SHIPPING] && is_numeric( $shipping_method_settings[self::FIELD_METHOD_FREE_SHIPPING] ) ) {
 				    if ( apply_filters( 'flexible_shipping_value_in_currency', floatval( $shipping_method_settings[self::FIELD_METHOD_FREE_SHIPPING] ) ) <= floatval( $cart_contents_cost ) ) {
-					    return true;
+					    $is_free_shipping = true;
 				    }
 			    }
 			}
-			return false;
+			/**
+             * Can modify free shipping.
+             *
+			 * @param bool  $is_free_shipping Current is_free_shipping value based on method settings.
+			 * @param array $shipping_method_settings Flexible shipping method settings.
+			 * @param float $cart_contents_cost Cart contents cost.
+			 *
+			 * @return bool
+             */
+			return apply_filters( 'flexible_shipping_is_free_shipping', $is_free_shipping, $shipping_method_settings, $cart_contents_cost );
 		}
 
 		/**
@@ -858,7 +868,7 @@ if ( ! class_exists( 'WPDesk_Flexible_Shipping' ) ) {
 			$data = wp_parse_args( $data, $defaults );
 			return sprintf( '<tr><td></td><td><span class="%1$s" id="%2$s">%3$s</span></td></tr>', esc_attr( $data['class'] ), esc_attr( $field_key ), $data['description'] );
 		}
-		
+
 		/**
          * Generate custom_services field HTML.
          *
