@@ -52,6 +52,18 @@ class Api {
 	private static $api_feedback_url = 'https://my.elementor.com/api/v1/feedback/';
 
 	/**
+	 * API get template content URL.
+	 *
+	 * Holds the URL of the template content API.
+	 *
+	 * @access private
+	 * @static
+	 *
+	 * @var string API get template content URL.
+	 */
+	private static $api_get_template_content_url = 'https://my.elementor.com/api/v1/templates/%d';
+
+	/**
 	 * Get info data.
 	 *
 	 * This function notifies the user of upgrade notices, new templates and contributors.
@@ -152,12 +164,6 @@ class Api {
 		}
 
 		return $data['canary_deployment'];
-	}
-
-	public static function get_promotion_widgets() {
-		$data = self::get_info_data();
-
-		return $data['pro_widgets'];
 	}
 
 	/**

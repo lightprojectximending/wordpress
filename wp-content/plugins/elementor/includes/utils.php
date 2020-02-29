@@ -652,8 +652,4 @@ class Utils {
 
 		return '0' !== $source && empty( $source );
 	}
-
-	public static function has_pro() {
-		return defined( 'ELEMENTOR_PRO_VERSION' );
-	}
 }

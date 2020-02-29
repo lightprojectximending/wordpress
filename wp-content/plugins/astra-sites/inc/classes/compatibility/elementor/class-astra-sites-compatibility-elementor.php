@@ -2,20 +2,18 @@
 /**
  * Astra Sites Compatibility for 'Elementor'
  *
+ * @see  https://wordpress.org/plugins/elementor/
+ *
  * @package Astra Sites
- * @since 2.0.0
+ * @since 1.4.3
  */
-
-namespace AstraSites\Elementor;
-
-defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'Astra_Sites_Compatibility_Elementor' ) ) :
 
 	/**
-	 * Elementor Compatibility
+	 * Astra_Sites_Compatibility_Elementor
 	 *
-	 * @since 2.0.0
+	 * @since 1.4.3
 	 */
 	class Astra_Sites_Compatibility_Elementor {
 
@@ -24,19 +22,19 @@ if ( ! class_exists( 'Astra_Sites_Compatibility_Elementor' ) ) :
 		 *
 		 * @access private
 		 * @var object Class object.
-		 * @since 2.0.0
+		 * @since 1.4.3
 		 */
 		private static $instance;
 
 		/**
 		 * Initiator
 		 *
-		 * @since 2.0.0
+		 * @since 1.4.3
 		 * @return object initialized object of class.
 		 */
 		public static function get_instance() {
 			if ( ! isset( self::$instance ) ) {
-				self::$instance = new self();
+				self::$instance = new self;
 			}
 			return self::$instance;
 		}
@@ -44,7 +42,7 @@ if ( ! class_exists( 'Astra_Sites_Compatibility_Elementor' ) ) :
 		/**
 		 * Constructor
 		 *
-		 * @since 2.0.0
+		 * @since 1.4.3
 		 */
 		public function __construct() {
 

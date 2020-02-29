@@ -6,9 +6,7 @@
  * @package Astra Addon
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) or exit;
 
 /**
  * Class Astra WXR Importer
@@ -23,7 +21,7 @@ class Astra_WXR_Importer {
 	 * @since  1.0.0
 	 * @var Astra_WXR_Importer
 	 */
-	private static $instance = null;
+	private static $_instance = null;
 
 	/**
 	 * Instantiate Astra_WXR_Importer
@@ -32,11 +30,11 @@ class Astra_WXR_Importer {
 	 * @return (Object) Astra_WXR_Importer.
 	 */
 	public static function instance() {
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new self();
+		if ( ! isset( self::$_instance ) ) {
+			self::$_instance = new self();
 		}
 
-		return self::$instance;
+		return self::$_instance;
 	}
 
 	/**
@@ -47,7 +45,7 @@ class Astra_WXR_Importer {
 	private function __construct() {
 
 		require_once ABSPATH . '/wp-admin/includes/class-wp-importer.php';
-		require_once ASTRA_SITES_DIR . 'inc/importers/wxr-importer/class-wp-importer-logger.php';
+		require_once ASTRA_SITES_DIR . 'inc/importers/wxr-importer/class-logger.php';
 		require_once ASTRA_SITES_DIR . 'inc/importers/wxr-importer/class-wp-importer-logger-serversentevents.php';
 		require_once ASTRA_SITES_DIR . 'inc/importers/wxr-importer/class-wxr-importer.php';
 		require_once ASTRA_SITES_DIR . 'inc/importers/wxr-importer/class-wxr-import-info.php';
@@ -56,6 +54,7 @@ class Astra_WXR_Importer {
 		add_action( 'wp_ajax_astra-wxr-import', array( $this, 'sse_import' ) );
 		add_filter( 'wxr_importer.pre_process.user', '__return_null' );
 		add_filter( 'wxr_importer.pre_process.post', array( $this, 'gutenberg_content_fix' ), 10, 4 );
+
 		if ( version_compare( get_bloginfo( 'version' ), '5.1.0', '>=' ) ) {
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'real_mime_types_5_1_0' ), 10, 5 );
 		} else {
@@ -67,31 +66,12 @@ class Astra_WXR_Importer {
 	/**
 	 * Track Imported Post
 	 *
-	 * @param  int   $post_id Post ID.
-	 * @param array $data Raw data imported for the post.
+	 * @param  int $post_id Post ID.
 	 * @return void
 	 */
-	public function track_post( $post_id = 0, $data = array() ) {
+	function track_post( $post_id ) {
 		Astra_Sites_Importer_Log::add( 'Inserted - Post ' . $post_id . ' - ' . get_post_type( $post_id ) . ' - ' . get_the_title( $post_id ) );
-
 		update_post_meta( $post_id, '_astra_sites_imported_post', true );
-
-		// Set the full width template for the pages.
-		if ( isset( $data['post_type'] ) && 'page' === $data['post_type'] ) {
-			$is_elementor_page = get_post_meta( $post_id, '_elementor_version', true );
-			$theme_status      = Astra_Sites::get_instance()->get_theme_status();
-			if ( 'installed-and-active' !== $theme_status && $is_elementor_page ) {
-				update_post_meta( $post_id, '_wp_page_template', 'elementor_header_footer' );
-			}
-		} elseif ( isset( $data['post_type'] ) && 'attachment' === $data['post_type'] ) {
-			$remote_url          = isset( $data['guid'] ) ? $data['guid'] : '';
-			$attachment_hash_url = Astra_Sites_Image_Importer::get_instance()->get_hash_image( $remote_url );
-			if ( ! empty( $attachment_hash_url ) ) {
-				update_post_meta( $post_id, '_astra_sites_image_hash', $attachment_hash_url );
-				update_post_meta( $post_id, '_elementor_source_image_hash', $attachment_hash_url );
-			}
-		}
-
 	}
 
 	/**
@@ -100,10 +80,10 @@ class Astra_WXR_Importer {
 	 * @param  int $term_id Term ID.
 	 * @return void
 	 */
-	public function track_term( $term_id ) {
+	function track_term( $term_id ) {
 		$term = get_term( $term_id );
 		if ( $term ) {
-			Astra_Sites_Importer_Log::add( 'Inserted - Term ' . $term_id . ' - ' . wp_json_encode( $term ) );
+			Astra_Sites_Importer_Log::add( 'Inserted - Term ' . $term_id . ' - ' . json_encode( $term ) );
 		}
 		update_term_meta( $term_id, '_astra_sites_imported_term', true );
 	}
@@ -124,7 +104,7 @@ class Astra_WXR_Importer {
 	 * @param array $comments Comments on the post.
 	 * @param array $terms Terms on the post.
 	 */
-	public function gutenberg_content_fix( $data, $meta, $comments, $terms ) {
+	function gutenberg_content_fix( $data, $meta, $comments, $terms ) {
 		if ( isset( $data['post_content'] ) ) {
 			$data['post_content'] = wp_slash( $data['post_content'] );
 		}
@@ -146,7 +126,7 @@ class Astra_WXR_Importer {
 	 * @param array  $mimes                     Key is the file extension with value as the mime type.
 	 * @param string $real_mime                Real MIME type of the uploaded file.
 	 */
-	public function real_mime_types_5_1_0( $defaults, $file, $filename, $mimes, $real_mime ) {
+	function real_mime_types_5_1_0( $defaults, $file, $filename, $mimes, $real_mime ) {
 		return $this->real_mimes( $defaults, $filename );
 	}
 
@@ -164,7 +144,7 @@ class Astra_WXR_Importer {
 	 *                                          $file being in a tmp directory).
 	 * @param array  $mimes                     Key is the file extension with value as the mime type.
 	 */
-	public function real_mime_types( $defaults, $file, $filename, $mimes ) {
+	function real_mime_types( $defaults, $file, $filename, $mimes ) {
 		return $this->real_mimes( $defaults, $filename );
 	}
 
@@ -178,37 +158,21 @@ class Astra_WXR_Importer {
 	 * @param string $filename                  The name of the file (may differ from $file due to
 	 *                                          $file being in a tmp directory).
 	 */
-	public function real_mimes( $defaults, $filename ) {
+	function real_mimes( $defaults, $filename ) {
 
 		// Set EXT and real MIME type only for the file name `wxr.xml`.
-		if ( strpos( $filename, 'wxr' ) !== false ) {
+		if ( 'wxr.xml' === $filename ) {
 			$defaults['ext']  = 'xml';
 			$defaults['type'] = 'text/xml';
 		}
 
-		// Set EXT and real MIME type only for the file name `wpforms.json` or `wpforms-{page-id}.json`.
-		if ( strpos( $filename, 'wpforms' ) !== false ) {
+		// Set EXT and real MIME type only for the file name `wpforms.json`.
+		if ( 'wpforms.json' === $filename ) {
 			$defaults['ext']  = 'json';
 			$defaults['type'] = 'text/plain';
 		}
 
 		return $defaults;
-	}
-
-	/**
-	 * Set GUID as per the attachment URL which avoid duplicate images issue due to the different GUID.
-	 *
-	 * @param array $data Post data. (Return empty to skip).
-	 * @param array $meta Meta data.
-	 * @param array $comments Comments on the post.
-	 * @param array $terms Terms on the post.
-	 */
-	public function fix_image_duplicate_issue( $data, $meta, $comments, $terms ) {
-
-		$remote_url   = ! empty( $data['attachment_url'] ) ? $data['attachment_url'] : $data['guid'];
-		$data['guid'] = $remote_url;
-
-		return $data;
 	}
 
 	/**
@@ -219,16 +183,16 @@ class Astra_WXR_Importer {
 	 *
 	 * @param  string $xml_url XML file URL.
 	 */
-	public function sse_import( $xml_url = '' ) {
+	function sse_import( $xml_url = '' ) {
 
 		if ( ! defined( 'WP_CLI' ) ) {
 
 			// Verify Nonce.
 			check_ajax_referer( 'astra-sites', '_ajax_nonce' );
 
-			// @codingStandardsIgnoreStart
 			// Start the event stream.
 			header( 'Content-Type: text/event-stream, charset=UTF-8' );
+
 			// Turn off PHP output compression.
 			$previous = error_reporting( error_reporting() ^ E_WARNING );
 			ini_set( 'output_buffering', 'off' );
@@ -241,10 +205,9 @@ class Astra_WXR_Importer {
 				header( 'X-Accel-Buffering: no' );
 				header( 'Content-Encoding: none' );
 			}
-			// @codingStandardsIgnoreEnd
 
-			// 2KB padding for IE.
-			echo esc_html( ':' . str_repeat( ' ', 2048 ) . "\n\n" );
+			// 2KB padding for IE
+			echo ':' . str_repeat( ' ', 2048 ) . "\n\n";
 		}
 
 		$xml_url = isset( $_REQUEST['xml_url'] ) ? urldecode( $_REQUEST['xml_url'] ) : urldecode( $xml_url );
@@ -260,9 +223,6 @@ class Astra_WXR_Importer {
 			wp_ob_end_flush_all();
 			flush();
 		}
-
-		// Change GUID image URL.
-		add_filter( 'wxr_importer.pre_process.post', array( $this, 'fix_image_duplicate_issue' ), 10, 4 );
 
 		// Are we allowed to create users?
 		add_filter( 'wxr_importer.pre_process.user', '__return_null' );
@@ -281,7 +241,7 @@ class Astra_WXR_Importer {
 		add_action( 'wxr_importer.process_failed.user', array( $this, 'imported_user' ) );
 
 		// Keep track of our progress.
-		add_action( 'wxr_importer.processed.post', array( $this, 'track_post' ), 10, 2 );
+		add_action( 'wxr_importer.processed.post', array( $this, 'track_post' ) );
 		add_action( 'wxr_importer.processed.term', array( $this, 'track_term' ) );
 
 		// Flush once more.
@@ -369,7 +329,7 @@ class Astra_WXR_Importer {
 	 * @param  string $url Downloaded XML file absolute URL.
 	 * @return array  XML file data.
 	 */
-	public function get_data( $url ) {
+	function get_data( $url ) {
 		$importer = $this->get_importer();
 		$data     = $importer->get_preliminary_information( $url );
 		if ( is_wp_error( $data ) ) {
@@ -491,7 +451,7 @@ class Astra_WXR_Importer {
 			echo 'data: ' . wp_json_encode( $data ) . "\n\n";
 
 			// Extra padding.
-			echo esc_html( ':' . str_repeat( ' ', 2048 ) . "\n\n" );
+			echo ':' . str_repeat( ' ', 2048 ) . "\n\n";
 		}
 
 		flush();

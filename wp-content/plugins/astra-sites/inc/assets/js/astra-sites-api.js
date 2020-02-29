@@ -2,6 +2,13 @@
 
 	AstraSitesAPI = {
 
+		_api_url      : astraSitesApi.ApiURL,
+		_stored_data  : {
+			'astra-site-category' : [],
+			'astra-site-page-builder': [],
+			'astra-sites' : [],
+		},
+
 		/**
 		 * API Request
 		 */
@@ -12,11 +19,11 @@
 	            cache: 'default',
            	};
 
-			if( astraSitesVars.headers ) {
-				params['headers'] = astraSitesVars.headers;
+			if( astraRenderGrid.headers ) {
+				params['headers'] = astraRenderGrid.headers;
 			}
 
-			fetch( astraSitesVars.ApiURL + args.slug, params).then(response => {
+			fetch( AstraSitesAPI._api_url + args.slug, params).then(response => {
 				if ( response.status === 200 ) {
 					return response.json().then(items => ({
 						items 		: items,
@@ -32,47 +39,8 @@
 				if( 'object' === typeof data ) {
 					data['args'] = args;
 					if( data.args.id ) {
-						astraSitesVars.stored_data[ args.id ] = $.merge( astraSitesVars.stored_data[ data.args.id ], data.items );
+						AstraSitesAPI._stored_data[ args.id ] = $.merge( AstraSitesAPI._stored_data[ data.args.id ], data.items );
 					}
-					data['args']['favorites'] = astraSitesVars.favorite_data;
-
-					if( 'undefined' !== typeof args.trigger && '' !== args.trigger ) {
-						$(document).trigger( args.trigger, [data] );
-					}
-
-					if( callback && typeof callback == "function"){
-						callback( data );
-				    }
-			   	}
-			});
-
-		},
-
-		/**
-		 * API Request
-		 */
-		_api_single_request: function( args, callback ) {
-
-			var params = {
-				method: 'GET',
-	            cache: 'default',
-           	};
-
-			if( astraSitesVars.headers ) {
-				params['headers'] = astraSitesVars.headers;
-			}
-
-			fetch( astraSitesVars.ApiURL + args.slug, params).then(response => {
-				if ( response.status === 200 ) {
-					return response.json();
-				} else {
-					$(document).trigger( 'astra-sites-api-request-error' );
-					return response.json();
-				}
-			})
-			.then(data => {
-				if( 'object' === typeof data ) {
-					// data['args']['favorites'] = astraSitesVars.favorite_data;
 
 					if( 'undefined' !== typeof args.trigger && '' !== args.trigger ) {
 						$(document).trigger( args.trigger, [data] );

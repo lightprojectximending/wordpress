@@ -1,8 +1,6 @@
 <?php
 namespace Elementor;
 
-use Elementor\Core\Base\App;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -15,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0.0
  */
-class Preview extends App {
+class Preview {
 
 	/**
 	 * Post ID.
@@ -28,21 +26,6 @@ class Preview extends App {
 	 * @var int Post ID.
 	 */
 	private $post_id;
-
-	/**
-	 * Get module name.
-	 *
-	 * Retrieve the module name.
-	 *
-	 * @since 3.0.0
-	 * @access public
-	 * @abstract
-	 *
-	 * @return string Module name.
-	 */
-	public function get_name() {
-		return 'preview';
-	}
 
 	/**
 	 * Init.
@@ -139,10 +122,6 @@ class Preview extends App {
 	 * @return bool Whether preview mode is active.
 	 */
 	public function is_preview_mode( $post_id = 0 ) {
-		if ( ! isset( $_GET['elementor-preview'] ) ) {
-			return false;
-		}
-
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
 		}
@@ -151,7 +130,7 @@ class Preview extends App {
 			return false;
 		}
 
-		if ( $post_id !== (int) $_GET['elementor-preview'] ) {
+		if ( ! isset( $_GET['elementor-preview'] ) || $post_id !== (int) $_GET['elementor-preview'] ) {
 			return false;
 		}
 
@@ -177,7 +156,9 @@ class Preview extends App {
 
 			$attributes = $document->get_container_attributes();
 
-			$attributes['class'] .= ' elementor-' . $this->post_id;
+			$attributes['id'] = 'elementor';
+
+			$attributes['class'] .= ' elementor-edit-mode';
 
 			$content = '<div ' . Utils::render_html_attributes( $attributes ) . '></div>';
 		}
@@ -251,16 +232,6 @@ class Preview extends App {
 		Plugin::$instance->widgets_manager->enqueue_widgets_scripts();
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		wp_enqueue_script(
-			'elementor-preview',
-			$this->get_js_assets_url( 'preview' ),
-			[
-				'elementor-frontend',
-			],
-			ELEMENTOR_VERSION,
-			true
-		);
 
 		wp_enqueue_script(
 			'elementor-inline-editor',
