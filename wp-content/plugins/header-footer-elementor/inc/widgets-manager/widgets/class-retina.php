@@ -16,7 +16,6 @@ use Elementor\Group_Control_Box_Shadow;
 use Elementor\Scheme_Typography;
 use Elementor\Scheme_Color;
 use Elementor\Group_Control_Image_Size;
-use Elementor\Repeater;
 use Elementor\Group_Control_Css_Filter;
 use Elementor\Group_Control_Text_Shadow;
 use Elementor\Plugin;
@@ -34,7 +33,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.2.0
  */
 class Retina extends Widget_Base {
-
 	/**
 	 * Retrieve the widget name.
 	 *
@@ -71,7 +69,7 @@ class Retina extends Widget_Base {
 	 * @return string Widget icon.
 	 */
 	public function get_icon() {
-		return 'fas fa-search';
+		return 'hfe-icon-retina-image';
 	}
 
 	/**
